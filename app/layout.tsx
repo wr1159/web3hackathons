@@ -70,6 +70,10 @@ export default function RootLayout({
                                     >
                                         NUS Blockchain
                                     </Link>
+                                    | Made by{" "}
+                                    <Link href={"https://x.com/wr1159"}>
+                                        wr1159
+                                    </Link>
                                 </p>
                                 <ThemeSwitcher />
                             </footer>
