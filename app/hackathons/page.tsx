@@ -8,6 +8,11 @@ export default async function HackathonsPage() {
         next: { revalidate: 3600 }, // ISR for cache
     }).then((res) => res.json());
 
+    hackathons.sort(
+        (a, b) =>
+            new Date(a.start_date).getTime() - new Date(b.start_date).getTime()
+    );
+
     return (
         <div>
             <h1 className="text-2xl font-bold mb-6">Web3 Hackathons</h1>

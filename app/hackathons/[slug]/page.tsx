@@ -1,27 +1,31 @@
-import { Hackathon } from "@/types/hackathon";
-import { createClient } from "@/utils/supabase/server";
+import { createClient } from "@/utils/supabase/client";
 
 export const revalidate = 3600; // Revalidate the page every hour
 export const dynamicParams = true; // Allow unknown slugs for on-demand rendering
 
 // Generate static params for hackathons
 export async function generateStaticParams() {
-    const baseUrl = process.env.NEXT_PUBLIC_API_BASE || "http://localhost:3000";
-    const hackathons: Hackathon[] = await fetch(
-        `${baseUrl}/api/hackathons`
-    ).then((res) => res.json());
+    const supabase = await createClient();
 
-    return hackathons.map((hackathon) => ({
-        slug: hackathon.slug,
-    }));
+    // Fetch hackathons directly from Supabase
+    const { data: hackathons, error } = await supabase
+        .from("hackathons")
+        .select("slug");
+
+    if (error) {
+        console.error("Error fetching hackathons:", error);
+        return [];
+    }
+
+    return hackathons;
 }
 
 export default async function HackathonPage({
     params,
 }: {
-    params: { slug: string };
+    params: Promise<{ slug: string }>;
 }) {
-    const { slug } = params;
+    const { slug } = await params;
     const supabase = await createClient();
     const { data: hackathon, error } = await supabase
         .from("hackathons")
@@ -30,7 +34,7 @@ export default async function HackathonPage({
         .single();
 
     if (!hackathon) {
-        return <div>Hackathon not found</div>; // Optional: Add a 404-like message
+        return <div>404: Hackathon not found</div>; // Optional: Add a 404-like message
     }
 
     return (
