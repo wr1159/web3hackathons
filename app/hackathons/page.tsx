@@ -1,31 +1,12 @@
-"use client";
-import { useEffect, useState } from "react";
+import { Hackathon } from "@/types/hackathon";
 
-interface Hackathon {
-    id: string;
-    name: string;
-    location: string;
-    start_date: string;
-    end_date: string;
-    prize_pool: number;
-    website_url: string;
-    banner_image: string;
-    slug: string;
-}
+export const revalidate = 3600; // Revalidate the page every hour
 
-export default function HackathonsPage() {
-    const [hackathons, setHackathons] = useState<Hackathon[]>([]);
-
-    useEffect(() => {
-        const fetchHackathons = async () => {
-            const response = await fetch("/api/hackathons");
-            const data = await response.json();
-            setHackathons(data);
-        };
-
-        fetchHackathons();
-    }, []);
-    console.log(hackathons);
+export default async function HackathonsPage() {
+    const baseUrl = process.env.NEXT_PUBLIC_API_BASE || "http://localhost:3000";
+    const hackathons: Hackathon[] = await fetch(`${baseUrl}/api/hackathons`, {
+        next: { revalidate: 3600 }, // ISR for cache
+    }).then((res) => res.json());
 
     return (
         <div>
@@ -37,7 +18,7 @@ export default function HackathonsPage() {
                         className="border rounded-lg shadow-lg"
                     >
                         <img
-                            src={hackathon.banner_image}
+                            src={hackathon.banner_image || "/placeholder.jpg"} // Placeholder for missing images
                             alt={hackathon.name}
                             className="w-full h-40 object-cover rounded-t-lg"
                         />
@@ -58,12 +39,10 @@ export default function HackathonsPage() {
                                 ).toLocaleDateString()}
                             </p>
                             <p className="text-sm text-primary">
-                                Prize Pool: ${hackathon.prize_pool}
+                                Prize Pool: ${hackathon.prize_pool || "N/A"}
                             </p>
                             <a
                                 href={`/hackathons/${hackathon.slug}`}
-                                target="_blank"
-                                rel="noopener noreferrer"
                                 className="text-blue-500 hover:underline text-sm"
                             >
                                 Learn More
