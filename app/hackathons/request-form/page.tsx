@@ -1,25 +1,42 @@
 "use client";
 
 import { useState } from "react";
+import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import * as z from "zod";
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
-import { Textarea } from "@/components/ui/textarea";
-import { useToast } from "@/hooks/use-toast";
+import { format } from "date-fns";
+import { DateRange } from "react-day-picker";
 
-// Zod schema for form validation
+import { Button } from "@/components/ui/button";
+import {
+    Form,
+    FormControl,
+    FormField,
+    FormItem,
+    FormLabel,
+    FormMessage,
+} from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import {
+    Popover,
+    PopoverContent,
+    PopoverTrigger,
+} from "@/components/ui/popover";
+import { Calendar } from "@/components/ui/calendar";
+import { toast } from "@/hooks/use-toast";
+
+// Define the Zod schema
 const formSchema = z.object({
-    name: z.string().min(2, { message: "Name must be at least 2 characters." }),
+    name: z
+        .string()
+        .min(2, { message: "Hackathon name must be at least 2 characters." }),
     location: z
         .string()
         .min(2, { message: "Location must be at least 2 characters." }),
-    start_date: z.string().refine((val) => !isNaN(Date.parse(val)), {
-        message: "Invalid start date.",
-    }),
-    end_date: z.string().refine((val) => !isNaN(Date.parse(val)), {
-        message: "Invalid end date.",
+    date_range: z.object({
+        from: z.date().nullable(),
+        to: z.date().nullable(),
     }),
     prize_pool: z
         .union([z.number().positive(), z.string().optional()])
@@ -35,47 +52,47 @@ const formSchema = z.object({
         .transform((val) =>
             val ? val.split(",").map((tag) => tag.trim()) : []
         ),
-    // image: z
-    //     .instanceof(File)
-    //     .optional()
-    //     .refine((file) => file === undefined || file instanceof File, {
-    //         message: "Invalid file.",
-    //     }),
+    image: z
+        .instanceof(File)
+        .optional()
+        .refine((file) => file === undefined || file instanceof File, {
+            message: "Invalid file.",
+        }),
 });
 
-export default function RequestForm() {
-    const { toast } = useToast();
-    const [isSubmitting, setIsSubmitting] = useState(false);
+export default function SubmitHackathonForm() {
+    const [dateRange, setDateRange] = useState<DateRange | undefined>({
+        from: new Date(),
+        to: new Date(),
+    });
 
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues: {
             name: "",
             location: "",
-            start_date: "",
-            end_date: "",
+            date_range: dateRange,
             prize_pool: undefined,
             website_url: "",
             tags: [""],
-            // image: undefined,
+            image: undefined,
         },
     });
 
     const onSubmit = async (values: z.infer<typeof formSchema>) => {
-        setIsSubmitting(true);
-
-        let base64Image = null;
-        // if (values.image) {
-        //     const reader = new FileReader();
-        //     base64Image = await new Promise<string>((resolve, reject) => {
-        //         reader.onload = () => resolve(reader.result as string);
-        //         reader.onerror = (error) => reject(error);
-        //         reader.readAsDataURL(values.image!);
-        //     });
-        // }
+        const base64Image = values.image
+            ? await new Promise<string>((resolve, reject) => {
+                  const reader = new FileReader();
+                  reader.onload = () => resolve(reader.result as string);
+                  reader.onerror = (error) => reject(error);
+                  reader.readAsDataURL(values.image!);
+              })
+            : null;
 
         const payload = {
             ...values,
+            start_date: values.date_range?.from?.toISOString(),
+            end_date: values.date_range?.to?.toISOString(),
             tags: values.tags,
             image: base64Image,
         };
@@ -105,106 +122,187 @@ export default function RequestForm() {
                 title: "Error",
                 description: "Failed to create hackathon.",
             });
-        } finally {
-            setIsSubmitting(false);
         }
     };
 
     return (
-        <div className="max-w-2xl mx-auto mt-10">
-            <h1 className="text-2xl font-bold mb-6">Submit a Hackathon</h1>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-                <div>
-                    <label className="block mb-2 font-medium">
-                        Hackathon Name
-                    </label>
-                    <Input
-                        {...form.register("name")}
-                        placeholder="e.g., ETHDam"
-                    />
-                    <p className="text-red-500 text-sm">
-                        {form.formState.errors.name?.message}
-                    </p>
-                </div>
-                <div>
-                    <label className="block mb-2 font-medium">Location</label>
-                    <Input
-                        {...form.register("location")}
-                        placeholder="e.g., Amsterdam, Netherlands"
-                    />
-                    <p className="text-red-500 text-sm">
-                        {form.formState.errors.location?.message}
-                    </p>
-                </div>
-                <div>
-                    <label className="block mb-2 font-medium">Start Date</label>
-                    <Input {...form.register("start_date")} type="date" />
-                    <p className="text-red-500 text-sm">
-                        {form.formState.errors.start_date?.message}
-                    </p>
-                </div>
-                <div>
-                    <label className="block mb-2 font-medium">End Date</label>
-                    <Input {...form.register("end_date")} type="date" />
-                    <p className="text-red-500 text-sm">
-                        {form.formState.errors.end_date?.message}
-                    </p>
-                </div>
-                <div>
-                    <label className="block mb-2 font-medium">
-                        Prize Pool (Optional)
-                    </label>
-                    <Input
-                        {...form.register("prize_pool")}
-                        placeholder="e.g., 50000"
-                    />
-                    <p className="text-red-500 text-sm">
-                        {form.formState.errors.prize_pool?.message}
-                    </p>
-                </div>
-                <div>
-                    <label className="block mb-2 font-medium">
-                        Website URL (Optional)
-                    </label>
-                    <Input
-                        {...form.register("website_url")}
-                        placeholder="e.g., https://ethdam.com"
-                    />
-                    <p className="text-red-500 text-sm">
-                        {form.formState.errors.website_url?.message}
-                    </p>
-                </div>
-                <div>
-                    <label className="block mb-2 font-medium">Tags</label>
-                    <Textarea
-                        {...form.register("tags")}
-                        placeholder="Comma-separated tags, e.g., blockchain, web3"
-                    />
-                    <p className="text-red-500 text-sm">
-                        {form.formState.errors.tags?.message}
-                    </p>
-                </div>
-                <div>
-                    <label className="block mb-2 font-medium">
-                        Upload Image (Optional)
-                    </label>
-                    {/* <Input
-                        {...form.register("image")}
-                        type="file"
-                        accept="image/*"
-                        onChange={(e) => {
-                            console.log(e.target.files?.[0]);
-                            form.setValue("image", e.target.files?.[0]);
-                        }}
-                    />
-                    <p className="text-red-500 text-sm">
-                        {form.formState.errors.image?.message}
-                    </p> */}
-                </div>
-                <Button type="submit" disabled={isSubmitting}>
-                    {isSubmitting ? "Submitting..." : "Submit Hackathon"}
-                </Button>
+        <Form {...form}>
+            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+                {/* Hackathon Name */}
+                <FormField
+                    control={form.control}
+                    name="name"
+                    render={({ field }) => (
+                        <FormItem>
+                            <FormLabel>Hackathon Name</FormLabel>
+                            <FormControl>
+                                <Input
+                                    placeholder="e.g., ETHGlobal"
+                                    {...field}
+                                />
+                            </FormControl>
+                            <FormMessage />
+                        </FormItem>
+                    )}
+                />
+
+                {/* Location */}
+                <FormField
+                    control={form.control}
+                    name="location"
+                    render={({ field }) => (
+                        <FormItem>
+                            <FormLabel>Location</FormLabel>
+                            <FormControl>
+                                <Input
+                                    placeholder="e.g., Singapore"
+                                    {...field}
+                                />
+                            </FormControl>
+                            <FormMessage />
+                        </FormItem>
+                    )}
+                />
+
+                {/* Date Range Picker */}
+                <FormField
+                    control={form.control}
+                    name="date_range"
+                    render={({ field }) => (
+                        <FormItem>
+                            <FormLabel>Date Range</FormLabel>
+                            <Popover>
+                                <PopoverTrigger asChild>
+                                    <FormControl>
+                                        <Button
+                                            variant="outline"
+                                            className="w-full justify-start"
+                                        >
+                                            {dateRange?.from ? (
+                                                dateRange.to ? (
+                                                    <>
+                                                        {format(
+                                                            dateRange.from,
+                                                            "LLL dd, y"
+                                                        )}{" "}
+                                                        -{" "}
+                                                        {format(
+                                                            dateRange.to,
+                                                            "LLL dd, y"
+                                                        )}
+                                                    </>
+                                                ) : (
+                                                    format(
+                                                        dateRange.from,
+                                                        "LLL dd, y"
+                                                    )
+                                                )
+                                            ) : (
+                                                "Pick a date range"
+                                            )}
+                                        </Button>
+                                    </FormControl>
+                                </PopoverTrigger>
+                                <PopoverContent
+                                    className="w-auto p-0"
+                                    align="start"
+                                >
+                                    <Calendar
+                                        initialFocus
+                                        mode="range"
+                                        selected={dateRange}
+                                        onSelect={(range) => {
+                                            setDateRange(range);
+                                            field.onChange(range);
+                                        }}
+                                        numberOfMonths={2}
+                                    />
+                                </PopoverContent>
+                            </Popover>
+                            <FormMessage />
+                        </FormItem>
+                    )}
+                />
+
+                {/* Prize Pool */}
+                <FormField
+                    control={form.control}
+                    name="prize_pool"
+                    render={({ field }) => (
+                        <FormItem>
+                            <FormLabel>Prize Pool (Optional)</FormLabel>
+                            <FormControl>
+                                <Input
+                                    placeholder="e.g., 50000"
+                                    type="number"
+                                    {...field}
+                                />
+                            </FormControl>
+                            <FormMessage />
+                        </FormItem>
+                    )}
+                />
+
+                {/* Website URL */}
+                <FormField
+                    control={form.control}
+                    name="website_url"
+                    render={({ field }) => (
+                        <FormItem>
+                            <FormLabel>Website URL (Optional)</FormLabel>
+                            <FormControl>
+                                <Input
+                                    placeholder="e.g., https://ethglobal.com"
+                                    {...field}
+                                />
+                            </FormControl>
+                            <FormMessage />
+                        </FormItem>
+                    )}
+                />
+
+                {/* Tags */}
+                <FormField
+                    control={form.control}
+                    name="tags"
+                    render={({ field }) => (
+                        <FormItem>
+                            <FormLabel>Tags</FormLabel>
+                            <FormControl>
+                                <Textarea
+                                    placeholder="Comma-separated tags, e.g., blockchain, web3"
+                                    {...field}
+                                />
+                            </FormControl>
+                            <FormMessage />
+                        </FormItem>
+                    )}
+                />
+
+                {/* Image Upload */}
+                <FormField
+                    control={form.control}
+                    name="image"
+                    render={({ field }) => (
+                        <FormItem>
+                            <FormLabel>Upload Image (Optional)</FormLabel>
+                            <FormControl>
+                                <Input
+                                    type="file"
+                                    accept="image/*"
+                                    onChange={(e) =>
+                                        field.onChange(e.target.files?.[0])
+                                    }
+                                />
+                            </FormControl>
+                            <FormMessage />
+                        </FormItem>
+                    )}
+                />
+
+                {/* Submit Button */}
+                <Button type="submit">Submit Hackathon</Button>
             </form>
-        </div>
+        </Form>
     );
 }
