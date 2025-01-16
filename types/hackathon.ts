@@ -7,5 +7,6 @@ export interface Hackathon {
     prize_pool: number;
     website_url: string;
     banner_image: string;
+    tags: string[];
     slug: string;
 }
