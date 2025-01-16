@@ -1,14 +1,15 @@
-import { Hackathon } from "@/types/hackathon";
+import { createClient } from "@/utils/supabase/client";
 
 export const revalidate = 3600; // Revalidate the page every hour
 
 export default async function HackathonsPage() {
-    const baseUrl = process.env.NEXT_PUBLIC_API_BASE || "http://localhost:3000";
-    const hackathons: Hackathon[] = await fetch(`${baseUrl}/api/hackathons`, {
-        next: { revalidate: 3600 }, // ISR for cache
-    }).then((res) => res.json());
+    const supabase = await createClient();
+    const { data: hackathons } = await supabase
+        .from("hackathons")
+        .select("*")
+        .eq("display", true); // Fetch only hackathons set to display
 
-    hackathons.sort(
+    hackathons?.sort(
         (a, b) =>
             new Date(a.start_date).getTime() - new Date(b.start_date).getTime()
     );
@@ -17,7 +18,7 @@ export default async function HackathonsPage() {
         <div>
             <h1 className="text-2xl font-bold mb-6">Web3 Hackathons</h1>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {hackathons.map((hackathon) => (
+                {hackathons?.map((hackathon) => (
                     <div
                         key={hackathon.id}
                         className="border rounded-lg shadow-lg"
