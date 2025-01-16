@@ -8,7 +8,9 @@ export default function Header() {
                 Your One Stop for Web3 Hackathons!
             </p>
             <Button>
-                <Link href="/hackathons">Start now!</Link>
+                <Link href="/hackathons" prefetch>
+                    Start now!
+                </Link>
             </Button>
             <div className="w-full p-[1px] bg-gradient-to-r from-transparent via-foreground/10 to-transparent my-8" />
         </div>
