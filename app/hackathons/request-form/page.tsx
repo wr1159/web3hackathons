@@ -18,13 +18,8 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import {
-    Popover,
-    PopoverContent,
-    PopoverTrigger,
-} from "@/components/ui/popover";
-import { Calendar } from "@/components/ui/calendar";
 import { toast } from "@/hooks/use-toast";
+import { DatePickerWithRange } from "@/components/date-range-picker";
 
 // Define the Zod schema
 const formSchema = z.object({
@@ -171,55 +166,12 @@ export default function SubmitHackathonForm() {
                     render={({ field }) => (
                         <FormItem>
                             <FormLabel>Date Range</FormLabel>
-                            <Popover>
-                                <PopoverTrigger asChild>
-                                    <FormControl>
-                                        <Button
-                                            variant="outline"
-                                            className="w-full justify-start"
-                                        >
-                                            {dateRange?.from ? (
-                                                dateRange.to ? (
-                                                    <>
-                                                        {format(
-                                                            dateRange.from,
-                                                            "LLL dd, y"
-                                                        )}{" "}
-                                                        -{" "}
-                                                        {format(
-                                                            dateRange.to,
-                                                            "LLL dd, y"
-                                                        )}
-                                                    </>
-                                                ) : (
-                                                    format(
-                                                        dateRange.from,
-                                                        "LLL dd, y"
-                                                    )
-                                                )
-                                            ) : (
-                                                "Pick a date range"
-                                            )}
-                                        </Button>
-                                    </FormControl>
-                                </PopoverTrigger>
-                                <PopoverContent
-                                    className="w-auto p-0"
-                                    align="start"
-                                >
-                                    <Calendar
-                                        initialFocus
-                                        mode="range"
-                                        selected={dateRange}
-                                        onSelect={(range) => {
-                                            setDateRange(range);
-                                            field.onChange(range);
-                                        }}
-                                        numberOfMonths={2}
-                                    />
-                                </PopoverContent>
-                            </Popover>
-                            <FormMessage />
+                            <FormControl>
+                                <DatePickerWithRange
+                                    date={dateRange}
+                                    setDate={setDateRange}
+                                />
+                            </FormControl>
                         </FormItem>
                     )}
                 />

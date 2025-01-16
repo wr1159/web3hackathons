@@ -70,7 +70,7 @@ export default function RootLayout({
                                         className="font-bold hover:underline"
                                     >
                                         NUS Blockchain
-                                    </Link>
+                                    </Link>{" "}
                                     | Made by{" "}
                                     <Link href={"https://x.com/wr1159"}>
                                         wr1159
