@@ -14,9 +14,8 @@ import {
 export default function HackathonsContent({
     hackathons,
 }: Readonly<{ hackathons: Hackathon[] }>) {
-    const [filteredHackathons, setFilteredHackathons] = useState<Hackathon[]>(
-        []
-    );
+    const [filteredHackathons, setFilteredHackathons] =
+        useState<Hackathon[]>(hackathons);
     const [searchTerm, setSearchTerm] = useState("");
     const [sortBy, setSortBy] = useState("start_date");
     const [filterTag, setFilterTag] = useState("All");
@@ -48,9 +47,7 @@ export default function HackathonsContent({
 
     const allTags = Array.from(new Set(hackathons?.flatMap((h) => h.tags)));
     return (
-        <div className="container mx-auto px-4 py-8">
-            <h1 className="text-3xl font-bold mb-6">Web3 Hackathons</h1>
-
+        <div className="container mx-auto px-4 pb-8">
             <div className="flex flex-col md:flex-row gap-4 mb-8">
                 <Input
                     placeholder="Search hackathons..."

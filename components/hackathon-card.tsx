@@ -27,7 +27,7 @@ export function HackathonCard({
 }: HackathonCardProps) {
     return (
         <Link href={`/hackathons/${slug}`} className="block h-full">
-            <Card className="overflow-hidden h-full transition-shadow hover:shadow-lg">
+            <Card className="overflow-hidden h-full hover:shadow-lg hover:translate-y-[-5px] transition-all duration-300">
                 <img
                     src={banner_image || "/placeholder.jpg"}
                     alt={name}
