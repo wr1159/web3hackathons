@@ -4,7 +4,6 @@ import { useState } from "react";
 import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { format } from "date-fns";
 import { DateRange } from "react-day-picker";
 
 import { Button } from "@/components/ui/button";
@@ -132,7 +131,7 @@ export default function SubmitHackathonForm() {
                             <FormLabel>Hackathon Name</FormLabel>
                             <FormControl>
                                 <Input
-                                    placeholder="e.g., ETHGlobal"
+                                    placeholder="e.g., ETHGlobal Singapore 2025"
                                     {...field}
                                 />
                             </FormControl>
@@ -186,7 +185,7 @@ export default function SubmitHackathonForm() {
                             <FormControl>
                                 <Input
                                     placeholder="e.g., 50000"
-                                    type="number"
+                                    type="text"
                                     {...field}
                                 />
                             </FormControl>
@@ -222,7 +221,7 @@ export default function SubmitHackathonForm() {
                             <FormLabel>Tags</FormLabel>
                             <FormControl>
                                 <Textarea
-                                    placeholder="Comma-separated tags, e.g., blockchain, web3"
+                                    placeholder="Comma-separated tags, e.g., onsite, virtual, zk"
                                     {...field}
                                 />
                             </FormControl>
