@@ -43,7 +43,7 @@ export default async function HackathonPage({
     }
 
     return (
-        <main className="px-8">
+        <main className="lg:px-8">
             <img
                 src={hackathon.banner_image || "/placeholder.jpg"}
                 alt={hackathon.name}
@@ -52,24 +52,27 @@ export default async function HackathonPage({
             <h1 className="text-3xl font-bold text-primary py-4">
                 {hackathon.name}
             </h1>
-            <div className="grid lg:grid-cols-2 gap-4">
-                <Card className="p-4 grid-cols-2 gap-4 grid">
-                    <div>
-                        <p className="text-lg">📍 {hackathon.location}</p>
+            <div className="grid md:grid-cols-2 gap-4">
+                <Card className="p-4">
+                    <div className="grid grid-cols-2 gap-4">
+                        <div className="flex flex-col">
+                            <p className="text-lg">📍 {hackathon.location}</p>
+                        </div>
+                        <div className="flex flex-col">
+                            <p className="text-LG">
+                                💰 Prize Pool: ${hackathon.prize_pool || "N/A"}
+                            </p>
 
-                        <p className="text-md">
-                            Prize Pool: ${hackathon.prize_pool || "N/A"}
-                        </p>
+                            <Link
+                                href={hackathon.website_url}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="mt-4"
+                            >
+                                <Button>Visit Website</Button>
+                            </Link>
+                        </div>
                     </div>
-                    <Link
-                        href={hackathon.website_url}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        // className="text-primary underline hover:text-destructive"
-                    >
-                        <Button>Visit Website</Button>
-                        {/* Visit Website */}
-                    </Link>
                 </Card>
                 <Card className="p-4">
                     <Calendar
@@ -81,7 +84,7 @@ export default async function HackathonPage({
                             to: hackathon.end_date,
                         }}
                         numberOfMonths={1}
-                        className="p-0 lg:hidden"
+                        className="p-0 xl:hidden"
                     />
                     <Calendar
                         initialFocus
@@ -92,7 +95,7 @@ export default async function HackathonPage({
                             to: hackathon.end_date,
                         }}
                         numberOfMonths={2}
-                        className="p-0 hidden lg:block"
+                        className="p-0 hidden xl:block"
                     />
                 </Card>
             </div>

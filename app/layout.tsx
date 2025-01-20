@@ -46,7 +46,7 @@ export default function RootLayout({
                         <div className="flex-1 w-full flex flex-col items-center gap-8">
                             <nav className="w-full flex justify-center border-b border-b-foreground/10 h-16">
                                 <div className="w-full max-w-7xl flex justify-between items-center p-3 px-5 text-sm">
-                                    <div className="flex gap-5 items-center font-semibold">
+                                    <div className="flex gap-5 items-center font-semibold w-full justify-between md:justify-normal">
                                         <Link
                                             href="/"
                                             className="font-mono text-primary"
@@ -54,25 +54,18 @@ export default function RootLayout({
                                             Web3Hackathons
                                         </Link>
                                         <Link href={"/hackathons"} prefetch>
-                                            <Button>
-                                                <span className="hidden lg:block">
-                                                    Explore Hackathons
-                                                </span>
-                                                <span className="lg:hidden">
-                                                    Hackathons
-                                                </span>
-                                            </Button>
+                                            <Button>Explore Hackathons</Button>
                                         </Link>
                                     </div>
                                     <Link
                                         href={"/hackathons/request-form"}
-                                        prefetch
+                                        className="hidden md:block"
                                     >
                                         <Button>New Hackathon</Button>
                                     </Link>
                                 </div>
                             </nav>
-                            <div className="flex flex-col gap-20 max-w-7xl px-6 lg:px-8 w-full">
+                            <div className="flex flex-col gap-20 max-w-7xl px-3 lg:px-8 w-full">
                                 {children}
                             </div>
 
