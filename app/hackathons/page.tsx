@@ -17,7 +17,7 @@ export default async function HackathonsPage() {
 
     return (
         <div>
-            <h1 className="text-2xl font-bold mb-6">Web3 Hackathons</h1>
+            <h1 className="sr-only">Web3 Hackathons</h1>
             <HackathonsContent hackathons={hackathons || []} />
         </div>
     );

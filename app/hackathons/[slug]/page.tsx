@@ -1,4 +1,9 @@
+import { DatePickerWithRange } from "@/components/date-range-picker";
+import { Button } from "@/components/ui/button";
+import { Calendar } from "@/components/ui/calendar";
+import { Card } from "@/components/ui/card";
 import { createClient } from "@/utils/supabase/client";
+import Link from "next/link";
 
 export const revalidate = 3600; // Revalidate the page every hour
 export const dynamicParams = true; // Allow unknown slugs for on-demand rendering
@@ -38,29 +43,59 @@ export default async function HackathonPage({
     }
 
     return (
-        <main className="p-8">
-            <h1 className="text-3xl font-bold">{hackathon.name}</h1>
+        <main className="px-8">
             <img
                 src={hackathon.banner_image || "/placeholder.jpg"}
                 alt={hackathon.name}
-                className="w-full h-64 object-cover rounded-md my-4"
+                className="w-full h-64 object-cover rounded-md"
             />
-            <p className="text-lg">{hackathon.location}</p>
-            <p className="text-md">
-                {new Date(hackathon.start_date).toLocaleDateString()} -{" "}
-                {new Date(hackathon.end_date).toLocaleDateString()}
-            </p>
-            <p className="text-md">
-                Prize Pool: ${hackathon.prize_pool || "N/A"}
-            </p>
-            <a
-                href={hackathon.website_url}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-blue-500 hover:underline"
-            >
-                Visit Website
-            </a>
+            <h1 className="text-3xl font-bold text-primary py-4">
+                {hackathon.name}
+            </h1>
+            <div className="grid lg:grid-cols-2 gap-4">
+                <Card className="p-4 grid-cols-2 gap-4 grid">
+                    <div>
+                        <p className="text-lg">📍 {hackathon.location}</p>
+
+                        <p className="text-md">
+                            Prize Pool: ${hackathon.prize_pool || "N/A"}
+                        </p>
+                    </div>
+                    <Link
+                        href={hackathon.website_url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        // className="text-primary underline hover:text-destructive"
+                    >
+                        <Button>Visit Website</Button>
+                        {/* Visit Website */}
+                    </Link>
+                </Card>
+                <Card className="p-4">
+                    <Calendar
+                        initialFocus
+                        mode="range"
+                        defaultMonth={hackathon.start_date}
+                        selected={{
+                            from: hackathon.start_date,
+                            to: hackathon.end_date,
+                        }}
+                        numberOfMonths={1}
+                        className="p-0 lg:hidden"
+                    />
+                    <Calendar
+                        initialFocus
+                        mode="range"
+                        defaultMonth={hackathon.start_date}
+                        selected={{
+                            from: hackathon.start_date,
+                            to: hackathon.end_date,
+                        }}
+                        numberOfMonths={2}
+                        className="p-0 hidden lg:block"
+                    />
+                </Card>
+            </div>
         </main>
     );
 }
