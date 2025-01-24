@@ -78,17 +78,17 @@ export default function RootLayout({
                                     >
                                         Web3Meets
                                     </Link>{" "}
-                                    and{" "}
+                                    | Made by{" "}
+                                    <Link href={"https://x.com/wr1159"}>
+                                        wr1159
+                                    </Link>
+                                    from
                                     <Link
                                         href={"https://x.com/nus_blockchain"}
                                         className="font-bold hover:underline"
                                     >
                                         NUS Blockchain
                                     </Link>{" "}
-                                    | Made by{" "}
-                                    <Link href={"https://x.com/wr1159"}>
-                                        wr1159
-                                    </Link>
                                 </p>
                                 <ThemeSwitcher />
                             </footer>
