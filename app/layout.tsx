@@ -102,10 +102,13 @@ export default function RootLayout({
                                         Web3Meets
                                     </Link>{" "}
                                     | Made by{" "}
-                                    <Link href={"https://x.com/wr1159"}>
+                                    <Link
+                                        href={"https://x.com/wr1159"}
+                                        className="font-bold hover:underline"
+                                    >
                                         wr1159
-                                    </Link>
-                                    from
+                                    </Link>{" "}
+                                    from{" "}
                                     <Link
                                         href={"https://x.com/nus_blockchain"}
                                         className="font-bold hover:underline"
