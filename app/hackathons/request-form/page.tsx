@@ -101,7 +101,8 @@ export default function SubmitHackathonForm() {
             if (response.ok) {
                 toast({
                     title: "Success",
-                    description: "Hackathon created successfully!",
+                    description:
+                        "Your request has been submitted and will be displayed shortly after review.",
                 });
                 form.reset();
             } else {
@@ -114,7 +115,7 @@ export default function SubmitHackathonForm() {
         } catch (error) {
             toast({
                 title: "Error",
-                description: "Failed to create hackathon.",
+                description: "Failed to submit request.",
             });
         }
     };
@@ -168,9 +169,13 @@ export default function SubmitHackathonForm() {
                             <FormControl>
                                 <DatePickerWithRange
                                     date={dateRange}
-                                    setDate={setDateRange}
+                                    setDate={(date) => {
+                                        setDateRange(date);
+                                        field.onChange(date);
+                                    }}
                                 />
                             </FormControl>
+                            <FormMessage />
                         </FormItem>
                     )}
                 />
@@ -200,7 +205,7 @@ export default function SubmitHackathonForm() {
                     name="website_url"
                     render={({ field }) => (
                         <FormItem>
-                            <FormLabel>Website URL (Optional)</FormLabel>
+                            <FormLabel>Website URL</FormLabel>
                             <FormControl>
                                 <Input
                                     placeholder="e.g., https://ethglobal.com"
