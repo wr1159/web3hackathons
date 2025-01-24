@@ -16,7 +16,7 @@ const defaultUrl = process.env.VERCEL_URL
 export const metadata = {
     metadataBase: new URL(defaultUrl),
     title: "Web3Hackathons",
-    description: "The one stop for all Web3 Hackathons",
+    description: "Your gateway for all Web3 Hackathons",
 };
 
 const geistSans = Geist({
