@@ -43,7 +43,8 @@ export function HackathonCard({
                         {new Date(end_date).toLocaleDateString()}
                     </p>
                     <p className="text-sm font-medium mb-2">
-                        Prize Pool: ${prize_pool?.toLocaleString() || "N/A"}
+                        Prize Pool: $
+                        {prize_pool?.toLocaleString("en-US") || "N/A"}
                     </p>
                 </CardContent>
                 <CardFooter className="p-4 pt-0 flex flex-wrap gap-2">

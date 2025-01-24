@@ -60,7 +60,10 @@ export default async function HackathonPage({
                         </div>
                         <div className="flex flex-col">
                             <p className="text-LG">
-                                💰 Prize Pool: ${hackathon.prize_pool || "N/A"}
+                                💰 Prize Pool: $
+                                {hackathon.prize_pool?.toLocaleString(
+                                    "en-US"
+                                ) || "N/A"}
                             </p>
 
                             <Link
