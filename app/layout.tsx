@@ -17,6 +17,27 @@ export const metadata = {
     metadataBase: new URL(defaultUrl),
     title: "Web3Hackathons",
     description: "Your gateway for all Web3 Hackathons",
+    openGraph: {
+        images: [
+            {
+                url: `${defaultUrl}/opengraph-image.png`,
+                width: 800,
+                height: 600,
+                alt: "Web3Hackathons OpenGraph Image",
+            },
+        ],
+    },
+    twitter: {
+        card: "summary_large_image",
+        images: [
+            {
+                url: `${defaultUrl}/twitter-image.png`,
+                width: 800,
+                height: 600,
+                alt: "Web3Hackathons Twitter Image",
+            },
+        ],
+    },
 };
 
 const geistSans = Geist({
