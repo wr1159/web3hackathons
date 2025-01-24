@@ -10,19 +10,21 @@ import { Toaster } from "@/components/ui/toaster";
 import { Button } from "@/components/ui/button";
 
 const defaultUrl = process.env.VERCEL_URL
-    ? `https://${process.env.VERCEL_URL}`
+    ? `https://web3hackathons.verecel.app`
     : "http://localhost:3000";
 
 export const metadata = {
     metadataBase: new URL(defaultUrl),
     title: "Web3Hackathons",
-    description: "Your gateway for all Web3 Hackathons",
+    description: "Your one stop for all Web3 Hackathons",
     openGraph: {
+        title: "Web3Hackathons",
+        description: "Your one stop for all Web3 Hackathons",
         images: [
             {
                 url: `${defaultUrl}/opengraph-image.png`,
-                width: 800,
-                height: 600,
+                width: 1200,
+                height: 630,
                 alt: "Web3Hackathons OpenGraph Image",
             },
         ],
