@@ -25,6 +25,9 @@ export function HackathonCard({
     slug,
     tags,
 }: HackathonCardProps) {
+    const today = new Date();
+    const isLive = today >= new Date(start_date) && today <= new Date(end_date);
+
     return (
         <Link href={`/hackathons/${slug}`} className="block h-full">
             <Card className="overflow-hidden h-full hover:shadow-lg hover:translate-y-[-5px] transition-all duration-300 ">
@@ -34,6 +37,11 @@ export function HackathonCard({
                     className="w-full h-40 object-cover"
                 />
                 <CardContent className="p-4">
+                    {isLive && (
+                        <Badge className="mb-2 w-full rounded-sm text-center">
+                            Live Now
+                        </Badge>
+                    )}
                     <h2 className="text-lg font-semibold mb-2">{name}</h2>
                     <p className="text-sm text-muted-foreground mb-1">
                         {location}
