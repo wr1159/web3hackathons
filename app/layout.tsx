@@ -10,7 +10,7 @@ import { Toaster } from "@/components/ui/toaster";
 import { Button } from "@/components/ui/button";
 
 const defaultUrl = process.env.VERCEL_URL
-    ? `https://web3hackathons.verecel.app`
+    ? `https://web3hackathons.vercel.app`
     : "http://localhost:3000";
 
 export const metadata = {
