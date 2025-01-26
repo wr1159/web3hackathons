@@ -10,6 +10,8 @@ import {
     SelectTrigger,
     SelectValue,
 } from "./ui/select";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "./ui/tabs";
+import { CalendarView } from "./calendar-view";
 
 export default function HackathonsContent({
     hackathons,
@@ -78,11 +80,35 @@ export default function HackathonsContent({
                     </SelectContent>
                 </Select>
             </div>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {filteredHackathons.map((hackathon) => (
-                    <HackathonCard key={hackathon.id} {...hackathon} />
-                ))}
-            </div>
+
+            <Tabs defaultValue="calendar" className="mb-8">
+                <TabsList>
+                    <TabsTrigger value="grid">Grid View</TabsTrigger>
+                    <TabsTrigger value="calendar">Calendar View</TabsTrigger>
+                </TabsList>
+                <TabsContent value="grid">
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                        {filteredHackathons.map((hackathon) => (
+                            <HackathonCard key={hackathon.id} {...hackathon} />
+                        ))}
+                    </div>
+                </TabsContent>
+                <TabsContent value="calendar">
+                    <CalendarView
+                        events={filteredHackathons.map((h) => ({
+                            id: h.id,
+                            name: h.name,
+                            platform: h.platform,
+                            startDate: new Date(h.start_date),
+                            endDate: new Date(h.end_date),
+                            prizePool: h.prize_pool,
+                            tags: h.tags,
+                        }))}
+                        startDate={new Date()}
+                        daysToShow={30}
+                    />
+                </TabsContent>
+            </Tabs>
         </div>
     );
 }

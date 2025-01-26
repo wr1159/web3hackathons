@@ -9,4 +9,5 @@ export interface Hackathon {
     banner_image: string;
     tags: string[];
     slug: string;
+    platform?: string;
 }
