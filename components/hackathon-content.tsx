@@ -98,14 +98,13 @@ export default function HackathonsContent({
                         events={filteredHackathons.map((h) => ({
                             id: h.id,
                             name: h.name,
-                            platform: h.platform,
+                            platform: h.platform || "Unknown",
                             startDate: new Date(h.start_date),
                             endDate: new Date(h.end_date),
                             prizePool: h.prize_pool,
                             tags: h.tags,
+                            slug: h.slug,
                         }))}
-                        startDate={new Date()}
-                        daysToShow={30}
                     />
                 </TabsContent>
             </Tabs>
