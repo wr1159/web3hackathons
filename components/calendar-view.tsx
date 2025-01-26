@@ -31,7 +31,7 @@ interface CalendarViewProps {
     events: Event[];
     initialStartDate?: Date;
 }
-
+// TODO: Migrate to React Calendar Timeline
 export function CalendarView({
     events,
     initialStartDate = new Date(),
@@ -126,9 +126,9 @@ export function CalendarView({
 
     const getPlatformColor = (platform: string) => {
         const colors: Record<string, string> = {
-            dorahacks: "bg-orange-500/90 hover:bg-orange-500",
-            ethglobal: "bg-indigo-600/90 hover:bg-indigo-600",
-            devfolio: "bg-blue-600/90 hover:bg-blue-600",
+            DoraHacks: "bg-orange-500/90 hover:bg-orange-500",
+            ETHGlobal: "bg-indigo-600/90 hover:bg-indigo-600",
+            Devfolio: "bg-blue-600/90 hover:bg-blue-600",
         };
         return colors[platform] || "bg-gray-500/90 hover:bg-gray-500";
     };

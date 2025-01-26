@@ -81,7 +81,7 @@ export default function HackathonsContent({
                 </Select>
             </div>
 
-            <Tabs defaultValue="calendar" className="mb-8">
+            <Tabs defaultValue="grid" className="mb-8">
                 <TabsList>
                     <TabsTrigger value="grid">Grid View</TabsTrigger>
                     <TabsTrigger value="calendar">Calendar View</TabsTrigger>
