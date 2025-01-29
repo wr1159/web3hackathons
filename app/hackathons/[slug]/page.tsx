@@ -44,11 +44,15 @@ export default async function HackathonPage({
 
     return (
         <main className="lg:px-8">
-            <img
-                src={hackathon.banner_image || "/placeholder.jpg"}
-                alt={hackathon.name}
-                className="w-full h-64 object-cover rounded-md"
-            />
+            {hackathon.banner_image ? (
+                <img
+                    src={hackathon.banner_image}
+                    alt={hackathon.name}
+                    className="w-full h-64 object-cover"
+                />
+            ) : (
+                <div className="w-full h-64 bg-primary bg-gradient-to-tr from-muted to-primary rounded-md" />
+            )}
             <h1 className="text-3xl font-bold text-primary py-4">
                 {hackathon.name}
             </h1>

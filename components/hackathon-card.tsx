@@ -31,11 +31,15 @@ export function HackathonCard({
     return (
         <Link href={`/hackathons/${slug}`} className="block h-full">
             <Card className="overflow-hidden h-full hover:shadow-lg hover:translate-y-[-5px] transition-all duration-300 ">
-                <img
-                    src={banner_image || "/placeholder.jpg"}
-                    alt={name}
-                    className="w-full h-40 object-cover"
-                />
+                {banner_image ? (
+                    <img
+                        src={banner_image || "/placeholder.jpg"}
+                        alt={name}
+                        className="w-full h-40 object-cover"
+                    />
+                ) : (
+                    <div className="w-full h-40 bg-primary bg-gradient-to-r from-muted to-primary" />
+                )}
                 <CardContent className="p-4">
                     {isLive && (
                         <Badge className="mb-2 w-full rounded-sm text-center">
