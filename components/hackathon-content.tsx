@@ -88,9 +88,17 @@ export default function HackathonsContent({
                 </TabsList>
                 <TabsContent value="grid">
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                        {filteredHackathons.map((hackathon) => (
-                            <HackathonCard key={hackathon.id} {...hackathon} />
-                        ))}
+                        {filteredHackathons
+                            .filter(
+                                (hackathon) =>
+                                    new Date(hackathon.end_date) >= new Date()
+                            )
+                            .map((hackathon) => (
+                                <HackathonCard
+                                    key={hackathon.id}
+                                    {...hackathon}
+                                />
+                            ))}
                     </div>
                 </TabsContent>
                 <TabsContent value="calendar">
