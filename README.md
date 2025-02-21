@@ -60,8 +60,7 @@ Message [wr1159](http://t.me/wr1159) on telegram if you are interested in having
   ```
 
   Both `NEXT_PUBLIC_SUPABASE_URL` and `NEXT_PUBLIC_SUPABASE_ANON_KEY` can be found in [your Supabase project's API settings](https://app.supabase.com/project/_/settings/api)
-
-5. You can now run the Next.js local development server:
+  5. You can now run the Next.js local development server:
 
   ```bash
     yarn dev
