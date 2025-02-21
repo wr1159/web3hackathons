@@ -5,14 +5,14 @@ The one stop for all the Web3Hackathons
 ## Features
 
 - View all Web3Hackathons
-    - Card View
-    - Table View
-    - Calendar View (⬇️)
+  - Card View
+  - Calendar View
+  - Table View (⬇️)
 - Submit Requests for Web3Hackathons (⬇️)
 - Submit Feature Requests (⬇️)
 - Login to Track your Hackathons (⬇️)
-    - Wallet
-    - Gmail
+  - Wallet
+  - Gmail
 
 ## Clone and run locally
 
@@ -40,7 +40,7 @@ The one stop for all the Web3Hackathons
 
 4. Rename `.env.example` to `.env.local` and update the following:
 
-    ```
+    ```env
     NEXT_PUBLIC_SUPABASE_URL=[INSERT SUPABASE PROJECT URL]
     NEXT_PUBLIC_SUPABASE_ANON_KEY=[INSERT SUPABASE PROJECT API ANON KEY]
     ```
